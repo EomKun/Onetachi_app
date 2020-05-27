@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Onetachi</string>
+    <string name="baseUrl">http://10.0.2.2:3000</string>
+</resources>
