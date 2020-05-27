@@ -9,6 +9,7 @@ import com.example.onetachi.retrofit.user.loginedActivity
 import com.example.onetachi.retrofit.user.signupActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,11 +28,15 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onResponse(call: retrofit2.Call<LoginUser>,
                                         response: retrofit2.Response<LoginUser>){
-                    val result = response.body()
+                    val result_id = response.body()?.id
 
-                    startActivity<loginedActivity>(
-                        "id" to result?.id
-                    )
+                    if(result_id == null)
+                        toast("아이디나 지문이 일치하지 않습니다")
+                    else {
+                        startActivity<loginedActivity>(
+                            "id" to result_id
+                        )
+                    }
                 }
             })
         }

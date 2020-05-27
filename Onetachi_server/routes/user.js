@@ -11,7 +11,7 @@ router.post("/login", (req, res) => {
     if(result.length){
         res.json({ id : req.body.id });
     } else {
-        res.json({ id: -1 });
+        res.json({  });
     }
 });
 
