@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".retrofit.auth.paperFailureActivity"></activity>
+        <activity android:name=".QR.ScanQR"></activity>
+        <activity android:name=".QR.CaptureForm" />
+        <activity android:name=".QR.CreateQR" />
         <activity android:name=".retrofit.auth.paperSuccessActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>

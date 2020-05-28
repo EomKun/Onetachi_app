@@ -1,7 +1,10 @@
 package com.example.onetachi.retrofit.user
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.onetachi.QR.CreateQR
+import com.example.onetachi.QR.ScanQR
 import com.example.onetachi.R
 import com.example.onetachi.retrofit.auth.paperSuccessActivity
 import kotlinx.android.synthetic.main.activity_logined.*
@@ -19,5 +22,16 @@ class loginedActivity : AppCompatActivity() {
         qrButton.setOnClickListener {
             startActivity<paperSuccessActivity>()
         }
+
+        scanQR.setOnClickListener {
+            val intent = Intent(this, ScanQR::class.java)
+            startActivity(intent)
+        }
+
+        createQR.setOnClickListener {
+            val intent = Intent(this, CreateQR::class.java)
+            startActivity(intent)
+        }
+
     }
 }
