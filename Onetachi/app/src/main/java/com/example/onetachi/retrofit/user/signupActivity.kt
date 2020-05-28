@@ -3,6 +3,7 @@ package com.example.onetachi.retrofit.user
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import com.example.onetachi.MainActivity
 import com.example.onetachi.R
 import com.example.onetachi.data.SignupUser
@@ -24,9 +25,26 @@ class signupActivity : AppCompatActivity() {
             val regNum1 = signupRegNumText1.text.toString()
             val regNum2 = signupRegNumText2.text.toString()
 
+            if(!Patterns.EMAIL_ADDRESS.matcher(id).matches()){
+                toast("올바른 이메일 형식이 아닙니다")
+                signupIdText.setText("")
+                return@setOnClickListener
+            }
+
+            if(regNum1.length != 6 || regNum2.length != 7){
+                toast("올바른 주민번호 형식이 아닙니다")
+                signupRegNumText1.setText("")
+                signupRegNumText2.setText("")
+                return@setOnClickListener
+            }
+
+            // TODO : Fido2를 이용한 회원 가입
+            // 사용자는 기본 정보를 입력 후 nextbutton을 눌렀을 때
+            // Fido2를 이용해 지문을 등록하여 가입
+
             service.signupUser(SignupUser(id, regNum1, regNum2))?.enqueue(object : retrofit2.Callback<SignupUser>{
                 override fun onFailure(call: retrofit2.Call<SignupUser>?, t: Throwable?) {
-                    Log.d("result", "실패함")
+                    toast("회원 가입 오류")
                 }
 
                 override fun onResponse(call: retrofit2.Call<SignupUser>,

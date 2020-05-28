@@ -11,7 +11,7 @@ router.post("/login", (req, res) => {
     if(result.length){
         res.json({ id : req.body.id });
     } else {
-        res.json({ id: -1 });
+        res.json({  });
     }
 });
 
@@ -22,6 +22,16 @@ router.post("/signup", (req, res) => {
     const residentNum = req.body.residentNum;
 
     try{
+        const users_filter = Users.filter((user) => {
+            return user.id === id;
+        });
+
+        if(users_filter.length){
+            res.json({
+                result: false
+            });
+        }
+        
         Users.push({ id, residentNum });
         console.log(req.body)
         res.json({
