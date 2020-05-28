@@ -18,7 +18,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo"
+        android:contentDescription="TODO" />
 
     <EditText
         android:id="@+id/idText"
@@ -29,13 +30,15 @@
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="450dp"
         android:ems="10"
-        android:hint="아이디"
+        android:hint="@string/login_id_hint"
         android:inputType="textPersonName"
+        android:maxLength="50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoImage" />
+        app:layout_constraintTop_toBottomOf="@+id/logoImage"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/loginButton"
@@ -46,7 +49,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="350dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="로그인"
+        android:text="@string/login_button_str"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/signupButton"
@@ -62,7 +65,7 @@
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="350dp"
         android:backgroundTint="#807F7F"
-        android:text="회원가입"
+        android:text="@string/signup_button_str"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
