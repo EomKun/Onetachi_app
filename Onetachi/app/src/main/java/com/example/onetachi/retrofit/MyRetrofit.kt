@@ -10,7 +10,7 @@ import java.security.cert.X509Certificate
 import javax.net.ssl.*
 
 class MyRetrofit {
-    var retrofit = Retrofit.Builder().baseUrl("https://10.0.2.2:3000")
+    var retrofit = Retrofit.Builder().baseUrl("https://70.12.113.181:3000")
         .client(getUnsafeOkHttpClient()?.build())
         /*.client(
             OkHttpClient.Builder()
