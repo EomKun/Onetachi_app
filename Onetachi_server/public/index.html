@@ -3,9 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="qrcode.js"></script>
     <title>Document</title>
   </head>
   <body>
-    <p>hello</p>
+    <p id="notice"></p>
+    <input id="text" type="text" value="https://www.naver.com" style="width:80%" /><br />
+    <div id="qrcode" style="width:192px; height:192px; margin-top:30px; margin-left:50px;"></div>
   </body>
+    <script type="text/javascript">
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        width: 192,
+        height: 192, //qr코드 크기
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+
+    function makeCode(){
+      var elText = document.getElementById("text");
+	
+    	if (!elText.value) {
+        document.getElementById("notice").innerHTML = "빈칸을 채워주세요"
+    		elText.focus();
+    		return;
+	    }
+      
+      document.getElementById("notice").innerHTML = "값을 입력 후 Enter버튼을 누르면 QR코드가 생성됩니다."
+	    qrcode.makeCode(elText.value);
+    }
+
+    makeCode();
+
+    $("#text").
+	on("blur", function () { //포커스를 벗어나도 코드 생성
+		makeCode(); 
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) { //enter 누르면 코드 생성
+			makeCode();
+		}
+	});
+
+</script>
+    
 </html>
