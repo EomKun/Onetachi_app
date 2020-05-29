@@ -31,16 +31,8 @@ class loginedActivity : AppCompatActivity() {
         }
 
         createQR.setOnClickListener {
-//            val intent = Intent(this, CreateQR::class.java)
-//            Toast.makeText(this@loginedActivity, qrInput.text, Toast.LENGTH_LONG).show()
-            if(!qrInput.text.isEmpty()){
-            startActivity<CreateQR>(
-                "url" to qrInput.text.toString())
-            }
-            else{
-                alert("값을 입력해주세요"){}.show()
-            }
-          }
+              startActivity<CreateQR>()
         }
-
     }
+
+}
