@@ -11,12 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.onetachi.auth.paperListActivity"></activity>
-        <activity android:name="com.example.onetachi.auth.paperFailureActivity" />
+        <activity android:name=".QR.WebViewQR"></activity>
+        <activity android:name=".retrofit.auth.paperFailureActivity" />
         <activity android:name=".QR.ScanQR" />
         <activity android:name=".QR.CaptureForm" />
         <activity android:name=".QR.CreateQR" />
-        <activity android:name="com.example.onetachi.auth.paperSuccessActivity" />
+        <activity android:name=".retrofit.auth.paperSuccessActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +29,8 @@
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true" />
 
-        <activity android:name="com.example.onetachi.user.signupActivity" />
-        <activity android:name="com.example.onetachi.user.loginedActivity" />
+        <activity android:name=".retrofit.user.signupActivity" />
+        <activity android:name=".retrofit.user.loginedActivity" />
         <activity android:name=".MainActivity" />
     </application>
 

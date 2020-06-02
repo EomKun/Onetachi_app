@@ -1,12 +1,13 @@
 package com.example.onetachi
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
-import com.example.onetachi.data.User
+import com.example.onetachi.data.LoginUser
 import com.example.onetachi.retrofit.MyRetrofit
-import com.example.onetachi.auth.paperListActivity
-import com.example.onetachi.user.signupActivity
+import com.example.onetachi.retrofit.user.loginedActivity
+import com.example.onetachi.retrofit.user.signupActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
@@ -28,21 +29,21 @@ class MainActivity : AppCompatActivity() {
             if(!Patterns.EMAIL_ADDRESS.matcher(id).matches())
                 toast("올바른 이메일 형식이 아닙니다")
             else {
-                service.loginUser(User(id))?.enqueue(object : retrofit2.Callback<User> {
-                    override fun onFailure(call: retrofit2.Call<User>?, t: Throwable?) {
+                service.loginUser(LoginUser(id))?.enqueue(object : retrofit2.Callback<LoginUser> {
+                    override fun onFailure(call: retrofit2.Call<LoginUser>?, t: Throwable?) {
                         toast("로그인 오류")
                     }
 
                     override fun onResponse(
-                        call: retrofit2.Call<User>,
-                        response: retrofit2.Response<User>
+                        call: retrofit2.Call<LoginUser>,
+                        response: retrofit2.Response<LoginUser>
                     ) {
                         val result_id = response.body()?.id
 
                         if (result_id == null)
                             toast("아이디나 지문이 일치하지 않습니다")
                         else {
-                            startActivity<paperListActivity>(
+                            startActivity<loginedActivity>(
                                 "id" to result_id
                             )
                         }

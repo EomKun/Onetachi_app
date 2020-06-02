@@ -9,7 +9,6 @@ router.post("/login", (req, res) => {
     });
 
     if(result.length){
-        console.info("Login success! Logined ID : " + req.body.id)
         res.json({ id : req.body.id });
     } else {
         res.json({  });
@@ -34,11 +33,7 @@ router.post("/signup", (req, res) => {
         }
         
         Users.push({ id, residentNum });
-        console.info("Signup Complete! info [id : ", 
-            req.body.id,
-            "regNum1 : ",
-            req.body.regNum1);
-            
+        console.log(req.body)
         res.json({
             result: true
         });

@@ -13,13 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField 'String', 'API_BASE_URL', "\"${getProperty('host')}/auth\""
-        buildConfigField 'String', 'RPID', "\"${getProperty('RPID')}\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
     }
 
     buildTypes {
@@ -46,17 +40,6 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-
     //qr
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
-    implementation 'com.google.android.material:material:1.1.0'
-
-    // Fido2
-    implementation 'com.google.android.gms:play-services-fido:18.0.0'
-
-    //sheredPreference
-    implementation 'androidx.core:core-ktx:1.1.0-rc03'
-
-    //LiveData
-    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
 }
