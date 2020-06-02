@@ -14,6 +14,11 @@ const options = {
 };
 
 app.use("/user", require("./routes/user"));
+app.use("/auth", require("./routes/auth"));
+
+app.get("/", (req, res) => {
+	res.json({"hi":"hi"});
+});
 
 https.createServer(options, app).listen(3000, () => {
     console.info("server ready");
