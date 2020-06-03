@@ -1,6 +1,7 @@
 package com.example.onetachi.protocol
 
 import com.example.onetachi.data.LoginUser
+import com.example.onetachi.data.Papers
 import com.example.onetachi.data.QrData
 import com.example.onetachi.data.SignupUser
 import retrofit2.Call
@@ -20,6 +21,12 @@ interface RetrofitNetwork {
         "content-type: application/json")
     @POST("/user/signup")
     fun signupUser(@Body user : SignupUser) : Call<SignupUser>
+
+    // paper req
+    @Headers("accept: application/json",
+        "content-type: application/json")
+    @POST("/auth/list")
+    fun availablePaper(@Body id : String) : Call<Papers>
 
     //qr scan
     @Headers("accept: application/json",

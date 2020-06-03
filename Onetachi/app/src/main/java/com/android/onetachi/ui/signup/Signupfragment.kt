@@ -10,12 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.android.onetachi.MainActivity
-import com.android.onetachi.R
 import com.android.onetachi.databinding.SignupFragmentBinding
-import com.android.onetachi.repository.AuthRepository
-import com.android.onetachi.ui.home.HomeFragment
 import com.android.onetachi.ui.observeOnce
-import kotlinx.android.synthetic.main.signup_fragment.view.*
 
 class SignupFragment : Fragment() {
     private val viewModel: SignupViewModel by viewModels()
@@ -29,18 +25,12 @@ class SignupFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        val view :View = inflater.inflate(R.layout.signup_fragment,container,false)
-        view.sign_up_applyBtn.setOnClickListener {
-            viewModel.sendSignupForm()
-        }
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        /*binding.signUpApplyBtn.setOnClickListener {
+        binding.signUpApplyBtn.setOnClickListener {
             viewModel.registerRequest().observeOnce(requireActivity()) { intent ->
                 val a = activity
                 if (intent.hasPendingIntent() && a != null) {
@@ -51,11 +41,16 @@ class SignupFragment : Fragment() {
                     }
                 }
             }
-        }*/
+        }
+
+        binding.signUpCancelBtn.setOnClickListener {
+            viewModel.cancelSignup()
+        }
     }
 
     fun handleRegister(data: Intent) {
         viewModel.registerResponse(data)
+        viewModel.cancelSignup()
+        // TODO : 여기 결과 받아서 회원가입 됐는지 안됐는지 띄워줘야 됨
     }
-
 }

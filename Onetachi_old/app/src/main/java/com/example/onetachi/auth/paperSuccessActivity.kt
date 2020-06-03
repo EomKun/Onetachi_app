@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.onetachi.R
-import kotlinx.android.synthetic.main.activity_paper_success.*
+import kotlinx.android.synthetic.main.activity_paper_list.*
 
 class paperSuccessActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -28,6 +28,7 @@ import androidx.lifecycle.observe
 import com.android.onetachi.repository.SignInState
 import com.android.onetachi.ui.auth.AuthFragment
 import com.android.onetachi.ui.home.HomeFragment
+import com.android.onetachi.ui.paperList.PaperListFragment
 import com.android.onetachi.ui.signup.SignupFragment
 import com.android.onetachi.ui.splash.SplashActivity
 import com.android.onetachi.ui.username.UsernameFragment
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                     showFragment(UsernameFragment::class.java) { UsernameFragment() }
                 }
                 is SignInState.SignedIn -> {
-                    showFragment(HomeFragment::class.java) { HomeFragment() }
+                    showFragment(PaperListFragment::class.java) { PaperListFragment() }
                 }
             }
         }
@@ -88,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, R.string.cancelled, Toast.LENGTH_SHORT).show()
                 } else {
                     val fragment = supportFragmentManager.findFragmentById(R.id.container)
-                    if (data != null && fragment is HomeFragment) {
+                    if (data != null && fragment is SignupFragment) {
                         fragment.handleRegister(data)
                     }
                 }
@@ -105,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, R.string.cancelled, Toast.LENGTH_SHORT).show()
                 } else {
                     val fragment = supportFragmentManager.findFragmentById(R.id.container)
-                    if (data != null && fragment is AuthFragment) {
+                    if (data != null && fragment is UsernameFragment) {
                         fragment.handleSignin(data)
                     }
                 }

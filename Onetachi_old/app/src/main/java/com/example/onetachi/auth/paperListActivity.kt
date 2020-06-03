@@ -32,7 +32,7 @@ class paperListActivity : AppCompatActivity() {
         val userId = intent.getStringExtra("id").toString()
 
         // available Paper List request
-        MyRetrofit().service.availablePaper(User(userId))?.enqueue(object : retrofit2.Callback<Papers>{
+        MyRetrofit().service.availablePaper(userId)?.enqueue(object : retrofit2.Callback<Papers>{
             override fun onFailure(call: Call<Papers>?, t: Throwable) {
                 toast("서류를 요청하는데 오류가 발생했습니다")
             }

@@ -17,6 +17,8 @@
 package com.android.onetachi.ui.username
 
 import android.R.attr.button
+import android.content.Intent
+import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,9 +28,11 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import com.android.onetachi.MainActivity
 import com.android.onetachi.R
 import com.android.onetachi.databinding.UsernameFragmentBinding
 import com.android.onetachi.repository.AuthRepository
+import com.android.onetachi.ui.observeOnce
 import kotlinx.android.synthetic.main.username_fragment.*
 import kotlinx.android.synthetic.main.username_fragment.view.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -45,12 +49,8 @@ class UsernameFragment : Fragment() {
         binding = UsernameFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-        val view :View = inflater.inflate(R.layout.username_fragment,container,false)
-        view.signupBttn.setOnClickListener {
-            AuthRepository.getInstance(this.context!!).signup();
-        }
 
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,28 +61,29 @@ class UsernameFragment : Fragment() {
                 binding.sending.hide()
             }
         }
-        binding.inputId.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_GO) {
-                viewModel.sendUsername()
-                true
-            } else {
-                false
-            }
+
+        binding.signupBtn.setOnClickListener {
+            viewModel.signup()
         }
 
-
-
-
-        /*viewModel.signinIntent.observe(this) { intent ->
-            val a = activity
-            if (intent.hasPendingIntent() && a != null) {
-                try {
-                    intent.launchPendingIntent(a, MainActivity.REQUEST_FIDO2_SIGNIN)
-                } catch (e: IntentSender.SendIntentException) {
-                    Log.e("a", "Error launching pending intent for signin request", e)
+        // Signin Listener
+        binding.next.setOnClickListener {
+            viewModel.signin().observeOnce(this) { intent ->
+                val a = activity
+                if (intent.hasPendingIntent() && a != null) {
+                    try {
+                        intent.launchPendingIntent(a, MainActivity.REQUEST_FIDO2_SIGNIN)
+                    } catch (e: IntentSender.SendIntentException) {
+                        Log.e("Signin", "Error launching pending intent for signin request", e)
+                    }
                 }
             }
+            // viewModel.signin()
         }
-    }*/
+    }
+
+    fun handleSignin(data: Intent) {
+        viewModel.signinResponse(data)
+        viewModel.completeSignin()
     }
 }

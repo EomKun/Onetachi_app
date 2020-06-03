@@ -17,12 +17,13 @@
 package com.android.onetachi.ui.username
 
 import android.app.Application
+import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.android.onetachi.repository.AuthRepository
-import com.android.onetachi.repository.SignInState
+import com.google.android.gms.fido.fido2.Fido2PendingIntent
 
 class UsernameViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -50,13 +51,17 @@ class UsernameViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    val signinIntent = repository.signinRequest(_sending)
-
-    fun sendUsername() {
-        val username = username.value
-        if (username != null && username.isNotBlank()) {
-            repository.username(username, _sending)
-        }
+    /*
+     * Signin
+     */
+    fun signin() :LiveData<Fido2PendingIntent>{ return repository.signinRequest(_sending, username.value!!) }
+    fun signinResponse(data: Intent) { repository.signinResponse(data, _sending) }
+    fun completeSignin() {
+        repository.signin()
     }
 
+    /*
+     * Signup
+     */
+    fun signup(){ repository.signup() }
 }
