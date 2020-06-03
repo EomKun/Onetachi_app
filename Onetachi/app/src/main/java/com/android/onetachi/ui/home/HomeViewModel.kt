@@ -43,7 +43,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
 
-    val credentials = repository.getCredentials()
+    // val credentials = repository.getCredentials()
 
     fun reauth() {
         repository.clearToken()

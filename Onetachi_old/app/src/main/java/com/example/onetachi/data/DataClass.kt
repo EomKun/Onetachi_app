@@ -12,6 +12,7 @@ data class SignupUserResult(
     val resultStr: String
 )
 
+
 data class Papers(
     var papers: ArrayList<Array<String>>
 )

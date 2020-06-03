@@ -11,6 +11,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.onetachi.R
 import kotlinx.android.synthetic.main.activity_paper_failure.*
+import kotlinx.android.synthetic.main.activity_paper_list.*
 
 class paperFailureActivity : AppCompatActivity() {
 
