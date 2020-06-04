@@ -69,7 +69,10 @@ class AuthRepository(
                 ).also { instance = it }
             }
         }
+
+        var token = "";
     }
+
 
     private var fido2ApiClient: Fido2ApiClient? = null
 
@@ -268,6 +271,14 @@ class AuthRepository(
         }
     }
 
+    fun requestToken(){
+        val token = api.registerQR()
+        prefs.edit(commit = true) {
+            putString("token", token)
+        }
+
+        AuthRepository.token = token;
+    }
     /**
      * Starts to register a new credential to the server. This should be called only when the
      * sign-in state is [SignInState.SignedIn].

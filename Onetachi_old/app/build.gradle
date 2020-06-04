@@ -13,20 +13,9 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField 'String', 'API_BASE_URL', "\"${getProperty('host')}/auth\""
-        resValue 'string', 'host', getProperty('host')
-        resValue 'string', 'asset_statements', """
-           [{
-             "include": "${getProperty('host')}/.well-known/assetlinks.json"
-           }]
-        """
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-    
     buildTypes {
         release {
             minifyEnabled false
@@ -53,6 +42,4 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     //qr
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
-
-    implementation 'com.google.android.gms:play-services-fido:18.0.0'
 }

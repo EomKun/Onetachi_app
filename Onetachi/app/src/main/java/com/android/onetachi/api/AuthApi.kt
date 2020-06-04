@@ -52,14 +52,13 @@ class AuthApi {
         private val JSON = MediaType.parse("application/json")
     }
 
-    private val client = OkHttpClient.Builder()
+    val client = OkHttpClient.Builder()
         .addInterceptor(AddHeaderInterceptor())
         .readTimeout(30, TimeUnit.SECONDS)
         .writeTimeout(40, TimeUnit.SECONDS)
         .connectTimeout(40, TimeUnit.SECONDS)
         .cookieJar(CookieJar.NO_COOKIES)
         .build()
-
 
     /**
      * @param username The username to be used for sign-in.
@@ -124,6 +123,23 @@ class AuthApi {
         val body = response.body() ?: throw ApiException("Empty response from /getKeys")
         return parseUserCredentials(body)
     }*/
+
+    fun registerQR(): String {
+        val call = client.newCall(
+            Request.Builder()
+                .url("https://mydata.kro.kr/fileRequest/request")
+                .method("POST", jsonRequestBody {name("test").value(12)})
+                .build()
+        )
+        val response = call.execute()
+        if (!response.isSuccessful) {
+            throwResponseError(response, "Error calling /registerRequest")
+        }
+        val body = response.body() ?: throw ApiException("Empty response from /registerRequest")
+        val cookie =  response.headers().get("Set-Cookie")!!
+        val token = body.toString()
+        return token
+    }
 
     /**
      * @param token The sign-in token.
