@@ -27,7 +27,6 @@
 
         <activity
             android:name=".MainActivity"
-            >
             <!-- android:windowSoftInputMode="stateUnchanged|adjustResize"-->
         </activity>
     </application>
