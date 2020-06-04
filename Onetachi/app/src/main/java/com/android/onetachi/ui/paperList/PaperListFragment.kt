@@ -24,6 +24,8 @@ class PaperListFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        binding.QRButton.setOnClickListener {
+            viewModel.submit()
+        }
     }
 }

@@ -134,6 +134,18 @@ class AuthRepository(
             invokeSignInStateListeners(SignInState.SignUp)
         }
     }
+
+    fun submit() {
+        executor.execute {
+            invokeSignInStateListeners(SignInState.SubmitPapers)
+        }
+    }
+
+    fun submitQR() {
+        executor.execute{
+            invokeSignInStateListeners(SignInState.SubmitQR)
+        }
+    }
     /**
      * Sends the username to the server. If it succeeds, the sign-in state will proceed to
      * [SignInState.SigningIn].

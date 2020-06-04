@@ -1,4 +1,13 @@
 package com.android.onetachi.ui.result
 
-class ResultViewModel {
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import com.android.onetachi.repository.AuthRepository
+
+class ResultViewModel (application: Application) : AndroidViewModel(application) {
+    private val repository = AuthRepository.getInstance(application)
+
+    fun OKStatus(){
+        repository.signin()
+    }
 }

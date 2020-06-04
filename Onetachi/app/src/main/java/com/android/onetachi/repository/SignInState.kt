@@ -52,4 +52,8 @@ sealed class SignInState {
     data class SignedIn(
         val username: String
     ) : SignInState()
+
+    object SubmitPapers : SignInState()
+
+    object SubmitQR : SignInState()
 }

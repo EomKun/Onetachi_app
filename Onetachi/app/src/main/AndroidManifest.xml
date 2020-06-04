@@ -13,7 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Fido2"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.splash.SplashActivity"></activity>
+        <activity android:name=".ui.splash.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="asset_statements"
@@ -21,12 +27,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="stateUnchanged|adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- android:windowSoftInputMode="stateUnchanged|adjustResize"-->
         </activity>
     </application>
 
