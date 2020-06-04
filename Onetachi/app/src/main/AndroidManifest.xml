@@ -4,6 +4,7 @@
     package="com.android.onetachi">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
     <application
         android:allowBackup="false"
@@ -27,6 +28,7 @@
 
         <activity
             android:name=".MainActivity"
+            >
             <!-- android:windowSoftInputMode="stateUnchanged|adjustResize"-->
         </activity>
     </application>

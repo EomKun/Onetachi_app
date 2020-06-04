@@ -7,7 +7,7 @@ import com.android.onetachi.repository.AuthRepository
 class QRViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = AuthRepository.getInstance(application)
 
-    fun submitQR(){
+    fun submitQR(url: String) {
         repository.submitQR()
     }
 }
