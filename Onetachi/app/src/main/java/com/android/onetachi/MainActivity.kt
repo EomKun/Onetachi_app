@@ -26,14 +26,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.observe
 import com.android.onetachi.repository.SignInState
+import com.android.onetachi.ui.qr.QRFragment
 import com.android.onetachi.ui.auth.AuthFragment
-import com.android.onetachi.ui.home.HomeFragment
+import com.android.onetachi.ui.paperList.PaperListFragment
+import com.android.onetachi.ui.result.ResultFragment
 import com.android.onetachi.ui.signup.SignupFragment
-import com.android.onetachi.ui.splash.SplashActivity
 import com.android.onetachi.ui.username.UsernameFragment
 import com.google.android.gms.fido.Fido
 import com.google.android.gms.fido.fido2.api.common.AuthenticatorErrorResponse
-import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,8 +48,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-
-        // startActivity<SplashActivity>()
 
         viewModel.signInState.observe(this) { state ->
             when (state) {
@@ -68,7 +66,13 @@ class MainActivity : AppCompatActivity() {
                     showFragment(UsernameFragment::class.java) { UsernameFragment() }
                 }
                 is SignInState.SignedIn -> {
-                    showFragment(HomeFragment::class.java) { HomeFragment() }
+                    showFragment(PaperListFragment::class.java) { PaperListFragment() }
+                }
+                is SignInState.SubmitPapers -> {
+                    showFragment(QRFragment::class.java) { QRFragment() }
+                }
+                is SignInState.SubmitQR -> {
+                    showFragment(ResultFragment::class.java) { ResultFragment() }
                 }
             }
         }
@@ -88,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, R.string.cancelled, Toast.LENGTH_SHORT).show()
                 } else {
                     val fragment = supportFragmentManager.findFragmentById(R.id.container)
-                    if (data != null && fragment is HomeFragment) {
+                    if (data != null && fragment is SignupFragment) {
                         fragment.handleRegister(data)
                     }
                 }
@@ -105,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, R.string.cancelled, Toast.LENGTH_SHORT).show()
                 } else {
                     val fragment = supportFragmentManager.findFragmentById(R.id.container)
-                    if (data != null && fragment is AuthFragment) {
+                    if (data != null && fragment is UsernameFragment) {
                         fragment.handleSignin(data)
                     }
                 }

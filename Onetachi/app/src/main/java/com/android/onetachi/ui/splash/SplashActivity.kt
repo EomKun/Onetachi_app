@@ -20,6 +20,7 @@ class SplashActivity : AppCompatActivity() {
         splashImg.startAnimation(fadeinAnimation)
 
         Handler().postDelayed({
+            startActivity<MainActivity>()
             finish()
         }, 1500)
     }

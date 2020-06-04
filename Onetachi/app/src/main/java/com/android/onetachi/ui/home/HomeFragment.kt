@@ -53,7 +53,7 @@ class HomeFragment : Fragment(), DeleteConfirmationFragment.Listener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val credentialAdapter = CredentialAdapter { credentialId ->
+        /*val credentialAdapter = CredentialAdapter { credentialId ->
             DeleteConfirmationFragment.newInstance(credentialId)
                 .show(childFragmentManager, FRAGMENT_DELETE_CONFIRMATION)
         }
@@ -68,7 +68,7 @@ class HomeFragment : Fragment(), DeleteConfirmationFragment.Listener {
             } else {
                 View.INVISIBLE
             }
-        }
+        }*/
 
         // Menu
         binding.appBar.replaceMenu(R.menu.home)
@@ -93,20 +93,6 @@ class HomeFragment : Fragment(), DeleteConfirmationFragment.Listener {
                 binding.processing.hide()
             }
         }
-
-        // FAB
-        /*binding.add.setOnClickListener {
-            viewModel.registerRequest().observeOnce(requireActivity()) { intent ->
-                val a = activity
-                if (intent.hasPendingIntent() && a != null) {
-                    try {
-                        intent.launchPendingIntent(a, MainActivity.REQUEST_FIDO2_REGISTER)
-                    } catch (e: IntentSender.SendIntentException) {
-                        Log.e(TAG, "Error launching pending intent for register request", e)
-                    }
-                }
-            }
-        }*/
     }
 
     override fun onDeleteConfirmed(credentialId: String) {

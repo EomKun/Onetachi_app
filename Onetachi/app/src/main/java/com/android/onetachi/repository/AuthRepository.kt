@@ -84,6 +84,7 @@ class AuthRepository(
      * calls for credential registration and sign-in.
      */
     private var lastKnownChallenge: String? = null
+    private var lastCookie: String? = null
 
     private fun invokeSignInStateListeners(state: SignInState) {
         val listeners = signInStateListeners.toList() // Copy
@@ -108,7 +109,7 @@ class AuthRepository(
                 value = when {
                     username.isNullOrBlank() -> SignInState.SignedOut
                     token.isNullOrBlank() -> SignInState.SigningIn(username)
-                    else -> SignInState.SignedIn(username, token)
+                    else -> SignInState.SignedIn(username)
                 }
             }
 
@@ -122,9 +123,27 @@ class AuthRepository(
         }
     }
 
+    fun signin() {
+        executor.execute {
+            invokeSignInStateListeners(SignInState.SignedIn("유저이름"))
+        }
+    }
+
     fun signup() {
         executor.execute {
             invokeSignInStateListeners(SignInState.SignUp)
+        }
+    }
+
+    fun submit() {
+        executor.execute {
+            invokeSignInStateListeners(SignInState.SubmitPapers)
+        }
+    }
+
+    fun submitQR() {
+        executor.execute{
+            invokeSignInStateListeners(SignInState.SubmitQR)
         }
     }
     /**
@@ -160,7 +179,7 @@ class AuthRepository(
             try {
                 val token = api.password(username, password)
                 prefs.edit(commit = true) { putString(PREF_TOKEN, token) }
-                invokeSignInStateListeners(SignInState.SignedIn(username, token))
+                invokeSignInStateListeners(SignInState.SignedIn(username))
             } catch (e: ApiException) {
                 Log.e(TAG, "Invalid login credentials", e)
 
@@ -183,22 +202,22 @@ class AuthRepository(
      * Retrieves the list of credential this user has registered on the server. This should be
      * called only when the sign-in state is [SignInState.SignedIn].
      */
-    fun getCredentials(): LiveData<List<Credential>> {
+    /*fun getCredentials(): LiveData<List<Credential>> {
         executor.execute {
             refreshCredentials()
         }
         return Transformations.map(prefs.liveStringSet(PREF_CREDENTIALS, emptySet())) { set ->
             parseCredentials(set)
         }
-    }
+    }*/
 
     @WorkerThread
-    private fun refreshCredentials() {
+    /*private fun refreshCredentials() {
         val token = prefs.getString(PREF_TOKEN, null)!!
         prefs.edit(commit = true) {
             putStringSet(PREF_CREDENTIALS, api.getKeys(token).toStringSet())
         }
-    }
+    }*/
 
     private fun List<Credential>.toStringSet(): Set<String> {
         return mapIndexed { index, credential ->
@@ -243,6 +262,12 @@ class AuthRepository(
         }
     }
 
+    fun cancelSignup() {
+        executor.execute {
+            invokeSignInStateListeners(SignInState.SignedOut)
+        }
+    }
+
     /**
      * Starts to register a new credential to the server. This should be called only when the
      * sign-in state is [SignInState.SignedIn].
@@ -255,8 +280,9 @@ class AuthRepository(
                 processing.postValue(true)
                 try {
                     //val token = prefs.getString(PREF_TOKEN, null)!!
-                    val (options, challenge) = api.registerRequest(id, username, idPart1, idPart2)
+                    val (options, challenge, cookie) = api.registerRequest(id, username, idPart1, idPart2)
                     lastKnownChallenge = challenge
+                    lastCookie = cookie
                     val task: Task<Fido2PendingIntent> = client.getRegisterIntent(options)
                     result.postValue(Tasks.await(task))
                 } catch (e: Exception) {
@@ -277,17 +303,13 @@ class AuthRepository(
         executor.execute {
             processing.postValue(true)
             try {
-                val token = prefs.getString(PREF_TOKEN, null)!!
                 val challenge = lastKnownChallenge!!
+                val cookie = lastCookie!!
                 val response = AuthenticatorAttestationResponse.deserializeFromBytes(
                     data.getByteArrayExtra(Fido.FIDO2_KEY_RESPONSE_EXTRA)!!
                 )
-                val credentialId = response.keyHandle.toBase64()
-                val credentials = api.registerResponse(token, challenge, response)
-                prefs.edit {
-                    putStringSet(PREF_CREDENTIALS, credentials.toStringSet())
-                    putString(PREF_LOCAL_CREDENTIAL_ID, credentialId)
-                }
+                // pub key 저장하는거 같음
+                val credentials = api.registerResponse(challenge, response, cookie)
             } catch (e: ApiException) {
                 Log.e(TAG, "Cannot call registerResponse", e)
             } finally {
@@ -305,7 +327,7 @@ class AuthRepository(
             try {
                 val token = prefs.getString(PREF_TOKEN, null)!!
                 api.removeKey(token, credentialId)
-                refreshCredentials()
+                //refreshCredentials()
             } catch (e: ApiException) {
                 Log.e(TAG, "Cannot call removeKey", e)
             } finally {
@@ -318,16 +340,17 @@ class AuthRepository(
      * Starts to sign in with a FIDO2 credential. This should only be called when the sign-in state
      * is [SignInState.SigningIn].
      */
-    fun signinRequest(processing: MutableLiveData<Boolean>): LiveData<Fido2PendingIntent> {
+    fun signinRequest(processing: MutableLiveData<Boolean>, id: String): LiveData<Fido2PendingIntent> {
         val result = MutableLiveData<Fido2PendingIntent>()
         executor.execute {
             fido2ApiClient?.let { client ->
                 processing.postValue(true)
                 try {
-                    val username = prefs.getString(PREF_USERNAME, null)!!
-                    val credentialId = prefs.getString(PREF_LOCAL_CREDENTIAL_ID, null)
-                    val (options, challenge) = api.signinRequest(username, credentialId)
+                    val username = id
+
+                    val (options, challenge, cookie) = api.signinRequest(username)
                     lastKnownChallenge = challenge
+                    lastCookie = cookie
                     val task = client.getSignIntent(options)
                     result.postValue(Tasks.await(task))
                 } finally {
@@ -346,19 +369,16 @@ class AuthRepository(
         executor.execute {
             processing.postValue(true)
             try {
-                val username = prefs.getString(PREF_USERNAME, null)!!
+                // val username = prefs.getString(PREF_USERNAME, null)!!
                 val challenge = lastKnownChallenge!!
+                val cookie = lastCookie!!
                 val response = AuthenticatorAssertionResponse.deserializeFromBytes(
                     data.getByteArrayExtra(Fido.FIDO2_KEY_RESPONSE_EXTRA)
                 )
                 val credentialId = response.keyHandle.toBase64()
-                val (credentials, token) = api.signinResponse(username, challenge, response)
-                prefs.edit(commit = true) {
-                    putString(PREF_TOKEN, token)
-                    putStringSet(PREF_CREDENTIALS, credentials.toStringSet())
-                    putString(PREF_LOCAL_CREDENTIAL_ID, credentialId)
-                }
-                invokeSignInStateListeners(SignInState.SignedIn(username, token))
+                val credentials = api.signinResponse("id", challenge, response, cookie)
+
+                invokeSignInStateListeners(SignInState.SignedIn("id"))
             } catch (e: ApiException) {
                 Log.e(TAG, "Cannot call registerResponse", e)
             } finally {

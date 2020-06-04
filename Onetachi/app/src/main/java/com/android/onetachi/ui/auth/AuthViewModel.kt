@@ -48,7 +48,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         addSource(password) { update(_processing.value == true, it) }
     }
 
-    val signinIntent = repository.signinRequest(_processing)
+    val signinIntent = repository.signinRequest(_processing, "id")
 
     val currentUsername: LiveData<String> =
         Transformations.map(repository.getSignInState()) { state ->
