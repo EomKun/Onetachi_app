@@ -1,0 +1,2 @@
+// 모든 node_modules 폴더를 git ignore
+node_modules/

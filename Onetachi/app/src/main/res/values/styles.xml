@@ -1,0 +1,9 @@
+<resources>
+
+    <style name="Theme.Fido2" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+</resources>
